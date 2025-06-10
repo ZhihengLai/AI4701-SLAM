@@ -1,0 +1,58 @@
+题目：室内场景的三维重建
+输入：62张围绕恐龙化石采集到的图像
+目标：对该场景进行三维重建
+
+重建流程：
+1.图像特征提取SIFT（关键点展示）
+2.图像特征匹配（匹配点展示）
+3.场景几何化——对极几何（前两张图间的相机pose，数值结果或三维可视化）
+4.场景重建——PnP（初始重建结果）
+5.场景优化——Bundle Adjustment（最终重建结果：点云和poses）
+
+上述流程中的括号内容为需要呈现的中间结果。在实现整体流程的同时，需要给出中间结果。
+
+代码模板：
+6个.py文件与代码提示如下：
+
+1.3d_recon.py
+提示：
+# perform complete 3D reconstruction from images
+2.bundle_adjustment.py
+提示：
+# perform bundle adjustment here
+3.feature_extraction.py
+提示：
+# perform feature extraction here
+# return the feature vector
+
+def extract_features(images):
+    """
+    """
+    pass
+4.feature_matching.py
+提示：
+# perform feature matching here
+
+# return the matching result
+
+def match_features(features):
+    """
+    """
+5.initial_recon.py
+提示：
+# use epipolar geometry to find the fundamental matrix and the essential matrix
+# use the essential matrix to find the relative pose between two cameras
+# use the relative pose to triangulate 3D points
+6.pnp_recon.py
+提示：
+# perform 3D reconstruction using PnP
+
+重建结果：应包含两个文件；
+1.重建的三维点云文件 (.ply) ；
+推荐使用 open3d 库[1] ;
+numpy/txt 格式的点云可以通过 open3d 库转换成 ply 格式[2,3]；
+open3d 库同时也提供点云可视化的接口[4]，推荐使用；
+2.相机外参文件 (.txt)；
+包含 62 行，对应所有图像；
+每行 16 个浮点数，是一个外参矩阵(世界坐标系到相机坐标系的变换)拉平后得到的；
+以第一张图像（DJI_20200223_163225_243.jpg）的相机坐标系为世界坐标系（第一行对	应外参矩阵为单位阵）；
